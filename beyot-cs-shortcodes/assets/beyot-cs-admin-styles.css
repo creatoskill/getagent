@@ -1,0 +1,23 @@
+.feature_module_status_table {
+	width: 65%;
+	border: 1px solid #d6d8db;
+	padding: 10px;
+	background-color: white;
+}
+.feature_module_status_table thead {
+	border-bottom: 1px solid #96989b;
+	/* padding: 2px; */
+	text-align: left;
+}
+.row-Active {
+	background-color: #00ff2842;
+}
+.row-Inactive {
+	background-color: #f7000047;
+}
+.feature_module_status_table tr td {
+	padding: 6px;
+}
+.feature_module_status_table thead tr td {
+	padding: 6px;
+}

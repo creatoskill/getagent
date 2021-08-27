@@ -51,15 +51,15 @@ $property_agent_shortcode = '[ere_property layout_style = "' . $property_of_agen
     author_id = "' . $agent_user_id . '"
     agent_id = "' . $agent_id . '"]';
 ?>
-<?php ?>
+<?php if ($total_property > 0): ?>
 	<div class="single-agent-element agent-properties">
 		<div class="ere-heading">
-			<h2><?php esc_html_e('My Agents', 'essential-real-estate'); ?><sub><?php //echo ere_get_format_number($total_property); ?></sub></h2>
+			<h2><?php esc_html_e('My Agents', 'essential-real-estate'); ?><sub>(<?php //echo ere_get_format_number($total_property); ?>)</sub></h2>
 		</div>
 
         <?php
-            // $agency_id = get_the_author_meta(ERE_METABOX_PREFIX . 'author_agent_id',$agent_id);
-            $agent_list = get_post_meta($agent_id,"agent_list_cs",true);
+            $agency_id = get_the_author_meta(ERE_METABOX_PREFIX . 'author_agent_id');
+            $agent_list = get_post_meta($agency_id,"agent_list_cs",true);
             ?>
 		            <div class="col-md-12">
             <?php
@@ -104,4 +104,4 @@ $property_agent_shortcode = '[ere_property layout_style = "' . $property_of_agen
         </div>
 		<?php //echo do_shortcode($property_agent_shortcode); ?>
 	</div>
-<?php ?>
+<?php endif; ?>

@@ -200,8 +200,7 @@ wp_enqueue_script( ERE_PLUGIN_PREFIX . 'agent', ERE_PLUGIN_URL . 'public/templat
 							<div class="agent-content">
 								<div class="agent-info">
 									<?php if ( ! empty( $agent_name ) ): ?>
-										<h2 class="agent-name"><a title="<?php echo esc_attr( $agent_name ) ?>"
-										                          href="<?php echo esc_url( $agent_link ) ?>"><?php echo esc_html( $agent_name ) ?></a>
+										<h2 class="agent-name"><a title="<?php echo esc_attr( $agent_name ) ?>">
 										</h2>
 									<?php endif; ?>
 									<span><?php

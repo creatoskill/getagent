@@ -7,23 +7,16 @@
 if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
+// var_dump($custom_agent_image_size);
 $agent_id = get_the_ID();
 $agent_name = get_the_title();
 $agent_link = get_the_permalink();
 
 $agent_post_meta_data = get_post_custom($agent_id);
-// var_dump($agent_post_meta_data);
-// exit;
+
 $agent_description = isset($agent_post_meta_data[ERE_METABOX_PREFIX . 'agent_description']) ? $agent_post_meta_data[ERE_METABOX_PREFIX . 'agent_description'][0] : '';
 $email = isset($agent_post_meta_data[ERE_METABOX_PREFIX . 'agent_email']) ? $agent_post_meta_data[ERE_METABOX_PREFIX . 'agent_email'][0] : '';
 
-
-//cs
-$agent_mobile_number = isset($agent_post_meta_data[ERE_METABOX_PREFIX . 'agent_mobile_number']) ? $agent_post_meta_data[ERE_METABOX_PREFIX . 'agent_mobile_number'][0] : '';
-
-$agent_office_address = isset($agent_post_meta_data[ERE_METABOX_PREFIX . 'agent_office_address']) ? $agent_post_meta_data[ERE_METABOX_PREFIX . 'agent_office_address'][0] : '';
-
-//cs
 $agent_facebook_url = isset($agent_post_meta_data[ERE_METABOX_PREFIX . 'agent_facebook_url']) ? $agent_post_meta_data[ERE_METABOX_PREFIX . 'agent_facebook_url'][0] : '';
 $agent_twitter_url = isset($agent_post_meta_data[ERE_METABOX_PREFIX . 'agent_twitter_url']) ? $agent_post_meta_data[ERE_METABOX_PREFIX . 'agent_twitter_url'][0] : '';
 $agent_linkedin_url = isset($agent_post_meta_data[ERE_METABOX_PREFIX . 'agent_linkedin_url']) ? $agent_post_meta_data[ERE_METABOX_PREFIX . 'agent_linkedin_url'][0] : '';
@@ -103,32 +96,6 @@ if (preg_match('/\d+x\d+/', $custom_agent_image_size)) {
                 <?php if (!empty($agent_description)): ?>
                     <p class="agent-description"><?php echo wp_kses_post($agent_description) ?></p>
                 <?php endif; ?>
-                <?php if (!empty($agent_description)): ?>
-                <?php 
-                    // truncate string
-                    $stringCut = substr($agent_description, 0, 60);
-                    $endPoint = strrpos($stringCut, ' ');
-                
-                    //if the string doesn't contain any space then it will cut without word basis.
-                    $desc = $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
-                    $desc .= '... <a href="'.esc_url($agent_link).'"><span style=" color: #F6931E;">View Details</a>';
-    
-                ?>
-                    <div><p class="agent-description-mobile-only"><?php echo $desc; ?></p></div>
-                <?php endif; ?>
-                <div class="cs-custom-details">
-                    <?php if (!empty($agent_office_address)): ?>
-                    <div>
-                        <span class="cs-icons"><i class="fa fa-map-marker" aria-hidden="true"></i></span><span class="cs-custom-address"><?php echo $agent_office_address; ?></span>
-                    </div>
-                    <?php endif; ?>
-                    <?php if (!empty($agent_mobile_number)): ?>
-                    <div>
-                        <span class="cs-custom-phone"><a href='tel: <?php echo $agent_mobile_number; ?>'><span class="cs-icons"><i class="fa fa-phone" aria-hidden="true"></i></span><?php echo $agent_mobile_number; ?></a></span>
-                    </div>
-                    <?php endif; ?>
-                    
-                </div>
             </div>
             <div class="agent-social">
                 <?php if (!empty($agent_facebook_url)): ?>

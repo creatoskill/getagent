@@ -27,6 +27,7 @@ $user_lastname = get_the_author_meta('last_name', $user_id);
 $user_email = get_the_author_meta('user_email', $user_id);
 $user_mobile_number = get_the_author_meta(ERE_METABOX_PREFIX . 'author_mobile_number', $user_id);
 $user_zip_code = get_the_author_meta(ERE_METABOX_PREFIX . 'author_zip', $user_id);
+$agency_price = get_the_author_meta(ERE_METABOX_PREFIX . 'agency_price', $user_id);
 // var_dump($user_email);
 // exit;
 $user_fax_number = get_the_author_meta(ERE_METABOX_PREFIX . 'author_fax_number', $user_id);
@@ -204,6 +205,16 @@ $hide_user_info_fields = array();
                             <input type="text" id="user_zip_code" name="user_zip_code"
                                    class="form-control"
                                    value="<?php echo esc_attr($user_zip_code); ?>">
+                                   
+                        </div>
+                    </div>
+                                        <div class="col-sm-12">
+                        <div class="form-group">
+                            <label
+                                for="agency_price"><?php esc_html_e('Price(Per Month)', 'essential-real-estate'); ?></label>
+                            <input type="text" id="agency_price" name="agency_price" placeholder="price(USD)"
+                                   class="form-control"
+                                   value="<?php echo esc_attr($agency_price); ?>">
                                    
                         </div>
                     </div>
@@ -443,14 +454,7 @@ $hide_user_info_fields = array();
 
             <?php
 
-            // var_dump(count($agent_list[0]));
-            if(count($agent_list[0]) > 1){
-                $agent_list = $agent_list[0];
-                
-            }
-
-
-            foreach ($agent_list as $key => $value) {
+            foreach ($agent_list[0] as $key => $value) {
                 
                 echo '<div class="col-md-4">';
                 echo "<div class='cs-agnt-img-bx cs-agent-image'><img src='".$value["image"]."' alt='not found' >";

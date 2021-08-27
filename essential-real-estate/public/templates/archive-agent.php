@@ -124,7 +124,10 @@ wp_print_styles( ERE_PLUGIN_PREFIX . 'archive-agent');
 
 $min_suffix_js = ere_get_option('enable_min_js', 0) == 1 ? '.min' : '';
 wp_enqueue_script(ERE_PLUGIN_PREFIX . 'archive-agent', ERE_PLUGIN_URL . 'public/assets/js/agent/ere-archive-agent' . $min_suffix_js . '.js', array('jquery'), ERE_PLUGIN_VER, true);
+
+    // echo do_shortcode("[cs_featured_agencies]");
 ?>
+
     <div class="ere-archive-agent-wrap">
         <?php do_action('ere_archive_agent_before_main_content');?>
         <div class="ere-archive-agent">

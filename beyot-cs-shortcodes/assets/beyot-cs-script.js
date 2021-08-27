@@ -9,7 +9,7 @@ jQuery(".btn-status-filter",css_class_wrap).on("click",function(e){
 function search_agent_cs(){
 
 	var url = window.location.href;
- var newurl = new URL("https://getagent.developersaeed.com/agent/");
+ var newurl = new URL("http://localhost/newme/agent");
  var s_text = jQuery("#agent-search-zip").val();
   	// newurl = url.substr(1, url.lastIndexOf("\\"));
   	// alert(newurl);
@@ -51,8 +51,6 @@ var getUrlParameterr = function getUrlParameterr(sParam) {
   // alert("");
   // var values = jQuery("input[name='inputname[]']")
               // .map(function(){return $(this).val();}).get();
-    jQuery("#ajax-cs-node").html('<i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>');
-    
   // console.log(values);
   var name = jQuery("#inputName").val();
   var email = jQuery("#inputEmail").val();
@@ -81,7 +79,7 @@ var getUrlParameterr = function getUrlParameterr(sParam) {
     jQuery.ajax({
 
       type: "GET",
-      url: "https://getagent.developersaeed.com/wp-admin/admin-ajax.php",
+      url: "http://localhost/newme/wp-admin/admin-ajax.php",
       data: {
         'action': 'add_agent',
         'agency_id': agent_id,
@@ -95,8 +93,6 @@ var getUrlParameterr = function getUrlParameterr(sParam) {
         'linkedin': linkedin, 
       },
       success:function(data){
-          jQuery("#ajax-cs-node").html("");
-          location.reload();
 
         console.log(data);
      },
@@ -116,18 +112,41 @@ function validateEmail($email) {
   var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
   return emailReg.test( $email );
 }
+function update_featured_status(id){
 
-jQuery( document ).ready(function() {
+    // console.log(id,linkn);
+
+    jQuery('.ajax-loader').css("visibility", "visible");
     
+    jQuery.ajax({
 
-var input = jQuery("#agent-search-zip");
-input.addEventListener("keyup", function(event) {
-  if (event.keyCode === 13) {
-   event.preventDefault();
-   jQuery("#search-agent-btn").click();
+      type: "GET",
+      url: ajaxURL,
+      data: {
+        'action': 'update_user_feature_status',
+        'u_id': id,
+      },
+      success:function(data){
+        // jQuery('.ajax-loader').css("visibility", "hidden");
+
+        let jdata = data.data.response;
+        let btnid = "#btnfeatured_"+id;
+
+        // doitnow(jdata,btnid);
+
+        if(jdata.status == "no"){
+
+          jQuery(btnid).text("Active");
+          jQuery(btnid).removeClass("Inactive").addClass('Active');
+        }
+        else{
+
+          jQuery(btnid).text("Inactive");
+          jQuery(btnid).removeClass("Active").addClass('Inactive');
+        }
+
+      }//success
+      
+    });
   }
-});
-
-});
-// ready
 // });

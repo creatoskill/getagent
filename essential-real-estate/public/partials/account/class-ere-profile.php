@@ -26,7 +26,7 @@ if (!class_exists('ERE_Profile')) {
 	    /**
          * Upload profile avatar
          */
-        public function profile_image_upload_ajax()
+        public function profile_image_upload_ajax($profile)
         {
             // Verify Nonce
             $nonce = isset($_REQUEST['nonce']) ? ere_clean(wp_unslash($_REQUEST['nonce'])) : '';
@@ -54,13 +54,20 @@ if (!class_exists('ERE_Profile')) {
                 $attach_id = wp_insert_attachment($attachment_details, $uploaded_image['file']);
                 $attach_data = wp_generate_attachment_metadata($attach_id, $uploaded_image['file']);
                 wp_update_attachment_metadata($attach_id, $attach_data);
+                $current_author = get_current_user_id();
+
+                $agent_id = get_user_meta($current_author,"real_estate_author_agent_id",true);
+
+                update_post_meta($agent_id,"_thumbnail_id",$attach_id);
 
                 $thumbnail_url = wp_get_attachment_thumb_url($attach_id);
+                // $prof = $profile;
 
                 $ajax_response = array(
                     'success' => true,
                     'url' => $thumbnail_url,
-                    'attachment_id' => $attach_id
+                    'attachment_id' => $attach_id,
+                    // 'profile' => $agent_id
                 );
 
                 echo json_encode($ajax_response);
@@ -169,6 +176,19 @@ if (!class_exists('ERE_Profile')) {
                 update_post_meta($agent_post_id, ERE_METABOX_PREFIX . 'agent_zip', $user_zip_code);
             } else {
                 delete_user_meta($user_id, ERE_METABOX_PREFIX . 'author_zip');
+            }
+            // Update agency price
+            if (!empty($_POST['agency_price'])) {
+                $agency_price = sanitize_text_field(wp_unslash($_POST['agency_price']));
+                if ( 0 < strlen( trim( preg_replace( '/[\s\#0-9_\-\+\/\(\)\.]/', '', $agency_price ) ) ) ) {
+                    echo json_encode(array('success' => false, 'message' => esc_html__('The Zip code you entered is not valid. Please try again.', 'essential-real-estate')));
+                    wp_die();
+                }
+                update_user_meta($user_id, ERE_METABOX_PREFIX . 'agency_price', $agency_price);
+                $agent_post_id = get_user_meta($user_id, ERE_METABOX_PREFIX . 'author_agent_id', $user_zip_code);
+                update_post_meta($agent_post_id, ERE_METABOX_PREFIX . 'agency_price', $agency_price);
+            } else {
+                delete_user_meta($user_id, ERE_METABOX_PREFIX . 'agency_price');
             }
 
             // Update Skype
@@ -747,6 +767,7 @@ if (!class_exists('ERE_Profile')) {
 
                 $author_mobile_number = isset($_POST[ERE_METABOX_PREFIX . 'author_mobile_number']) ? ere_clean(wp_unslash($_POST[ERE_METABOX_PREFIX . 'author_mobile_number'])) : '';
                 $author_zip_code = isset($_POST[ERE_METABOX_PREFIX . 'author_zip']) ? ere_clean(wp_unslash($_POST[ERE_METABOX_PREFIX . 'author_zip'])) : '';
+                $agency_price = isset($_POST[ERE_METABOX_PREFIX . 'agency_price']) ? ere_clean(wp_unslash($_POST[ERE_METABOX_PREFIX . 'agency_price'])) : '';
                 $author_fax_number = isset($_POST[ERE_METABOX_PREFIX . 'author_fax_number']) ? ere_clean(wp_unslash($_POST[ERE_METABOX_PREFIX . 'author_fax_number'])) : '';
                 $author_skype = isset($_POST[ERE_METABOX_PREFIX . 'author_skype']) ? ere_clean(wp_unslash($_POST[ERE_METABOX_PREFIX . 'author_skype'])) : '';
                 $author_facebook_url = isset($_POST[ERE_METABOX_PREFIX . 'author_facebook_url']) ? esc_url_raw(wp_unslash($_POST[ERE_METABOX_PREFIX . 'author_facebook_url'])) : '';
@@ -760,12 +781,14 @@ if (!class_exists('ERE_Profile')) {
 
                 update_user_meta($user_id, ERE_METABOX_PREFIX . 'author_mobile_number', $author_mobile_number);
                 update_user_meta($user_id, ERE_METABOX_PREFIX . 'author_zip', $author_zip_code);
+                update_user_meta($user_id, ERE_METABOX_PREFIX . 'agency_price', $agency_price);
                 $agent_post_id = get_user_meta($user_id,"real_estate_author_agent_id",true);
                 $agent_post_id = (int)$agent_post_id;
 
                 // var_dump($agent_post_id);
                 // exit;
                 update_post_meta($agent_post_id, ERE_METABOX_PREFIX . 'agent_zip', $author_zip_code);
+                update_post_meta($agent_post_id, ERE_METABOX_PREFIX . 'agency_price', $agency_price);
                 update_user_meta($user_id, ERE_METABOX_PREFIX . 'author_fax_number', $author_fax_number);
                 update_user_meta($user_id, ERE_METABOX_PREFIX . 'author_skype', $author_skype);
                 update_user_meta($user_id, ERE_METABOX_PREFIX . 'author_facebook_url', $author_facebook_url);
@@ -786,6 +809,7 @@ if (!class_exists('ERE_Profile')) {
                     $description = isset($_POST['description']) ? wp_filter_post_kses($_POST['description']) : '';
                     $email = isset($_POST['email']) ? sanitize_email(wp_unslash($_POST['email'])) : '';
                     $author_zip_code = isset($_POST[ERE_METABOX_PREFIX . 'author_zip']) ? ere_clean(wp_unslash($_POST[ERE_METABOX_PREFIX . 'author_zip'])) : '';
+                    $agency_price = isset($_POST[ERE_METABOX_PREFIX . 'agency_price']) ? ere_clean(wp_unslash($_POST[ERE_METABOX_PREFIX . 'agency_price'])) : '';
                     $agent_website_url = isset($_POST['url']) ? esc_url_raw(wp_unslash($_POST['url'])) : '';
 
 
@@ -798,10 +822,12 @@ if (!class_exists('ERE_Profile')) {
                     update_post_meta($agent_id, ERE_METABOX_PREFIX . 'agent_description', $description);
                     update_post_meta($agent_id, ERE_METABOX_PREFIX . 'agent_email', $email);
                     update_post_meta($agent_id, ERE_METABOX_PREFIX . 'agent_zip', $author_zip_code);
+                    update_post_meta($agent_id, ERE_METABOX_PREFIX . 'agency_price', $agency_price);
                     update_post_meta($agent_id, ERE_METABOX_PREFIX . 'agent_website_url', $agent_website_url);
                     update_post_meta($agent_id, ERE_METABOX_PREFIX . 'agent_position', $author_position);
                     update_post_meta($agent_id, ERE_METABOX_PREFIX . 'agent_mobile_number', $author_mobile_number);
                     update_post_meta($agent_id, ERE_METABOX_PREFIX . 'agent_zip', $author_zip_code);
+                    update_post_meta($agent_id, ERE_METABOX_PREFIX . 'agency_price', $agency_price);
                     update_post_meta($agent_id, ERE_METABOX_PREFIX . 'agent_fax_number', $author_fax_number);
                     update_post_meta($agent_id, ERE_METABOX_PREFIX . 'agent_company', $author_company);
                     update_post_meta($agent_id, ERE_METABOX_PREFIX . 'agent_office_number', $author_office_address);
