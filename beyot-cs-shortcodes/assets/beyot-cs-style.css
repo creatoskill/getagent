@@ -1,0 +1,32 @@
+.cs-agnt-bx {
+	text-align: center;
+	padding: 3px;
+	border-bottom: 1px solid #cec6c6;
+	font-weight: bold;
+}
+.cs-agent-image img {
+	height: 200px;
+}
+.cs-agent-image {
+	text-align: center;
+}
+/*.cs-custom-details div {*/
+	/* margin-bottom: 4px; */
+/*	background-color: white;*/
+/*	max-width: 87%;*/
+/*	min-height: 30px;*/
+/*	margin: 4px auto;*/
+/*	border-radius: 30px;*/
+	/* padding-bottom: -1px; */
+/*}*/
+.cs-icons {
+	font-size: larger;
+	padding: 6px;
+}
+.agent-description-mobile-only {
+	display: inline !important;
+}
+body {
+	line-height: 1.714;
+	color: #9d9b9b !important;
+}
