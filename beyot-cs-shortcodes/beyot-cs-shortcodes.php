@@ -321,7 +321,6 @@ $num_pages = ceil($total_users / $users_per_page); // How many pages of users we
 ?>
 <h3>Page <?php echo $current_page; ?> of <?php echo $num_pages; ?></h3>
 <p>Displaying <?php echo $users_per_page; ?> of <?php echo $total_users; ?> users</p>
-<p>[Sometimes Have To Click Twice Because Of Ajax Call]</p>
 
 <table class="feature_module_status_table">
   <thead>

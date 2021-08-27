@@ -13,7 +13,7 @@
         
 /*
 Version - 3.6.7
- */
+ 
 Copyright 2016-2018 by G5Theme
 
 This program is free software; you can redistribute it and/or
