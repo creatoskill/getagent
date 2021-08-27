@@ -5,7 +5,7 @@ Plugin URI: https://www.fiverr.com/creatos_kill
 Description: Post Type Metal Present Your Metal Works With Charm and Efficiency.
 Author: M.husnain
 Author URI: https://www.fiverr.com/creatos_kill
-Version: 0.1.2
+Version: 0.1.3
 */
 
 
